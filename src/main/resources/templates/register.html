@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/register.css}">
+</head>
+<body>
+    <div class="container">
+        <div class="registro-container">
+            <div class="logo-container">
+                <div class="logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+                        <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                        <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <p th:if="${success}" class="text-success text-center">
+                <strong th:text="${success}"></strong>
+            </p>
+            <p th:if="${error}" class="text-danger text-center">
+                <strong th:text="${error}"></strong>
+            </p>
+            
+            <h2 class="form-title">Crear una cuenta</h2>
+            
+            <form th:action="@{/register}" method="post">
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre completo</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingresa tu nombre" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="email" class="form-label">Correo electrónico</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="ejemplo@correo.com" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Ingresa tu contraseña" required>
+                        <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('password', this)">👁️</button>
+                    </div>
+                    <div class="form-text">Tu contraseña debe tener al menos 8 caracteres.</div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-registro mt-3">Registrarse</button>
+            </form>
+
+            <div class="mt-3 text-center">
+                <p>O regístrate con:</p>
+                <a th:href="@{/oauth2/authorization/facebook}" class="btn btn-primary">Facebook</a>
+                <a th:href="@{/oauth2/authorization/google}" class="btn btn-danger">Google</a>
+            </div>
+            
+            <div class="mt-4 text-center">
+                <p>¿Ya tienes una cuenta?</p>
+                <a th:href="@{/login}" class="btn btn-outline-primary btn-sm login-link">Iniciar sesión</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function togglePassword(fieldId, btn) {
+            const field = document.getElementById(fieldId);
+            if (field.type === "password") {
+                field.type = "text";
+                btn.innerText = "🙈"; // Cambiar al icono de ocultar contraseña
+            } else {
+                field.type = "password";
+                btn.innerText = "👁️"; // Cambiar al icono de mostrar contraseña
+            }
+        }
+    </script>
+</body>
+</html>

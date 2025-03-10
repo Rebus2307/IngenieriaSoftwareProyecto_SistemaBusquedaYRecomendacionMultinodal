@@ -1,0 +1,116 @@
+body {
+    /* Aquí deberás cambiar la URL por la ruta de tu imagen local.
+       Por ejemplo: "url('imagenes/mi_fondo.jpg')" */
+    background-image: url('../images/wallpaperflare.com_wallpaper.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.registro-container {
+    max-width: 450px;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.form-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+    font-weight: 500;
+}
+
+.form-control {
+    background-color: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-color: #0D6EFD;
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.25);
+}
+
+.form-label {
+    font-weight: 500;
+    color: #333;
+    font-size: 14px;
+}
+
+.btn-registro {
+    width: 100%;
+    padding: 12px;
+    font-weight: 500;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #0A84FF, #0062CC);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-registro:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(10, 132, 255, 0.4);
+}
+
+.logo-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #0A84FF, #5AC8FA);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 30px;
+    box-shadow: 0 4px 10px rgba(10, 132, 255, 0.3);
+}
+
+/* Estilos adicionales para los enlaces */
+.login-link {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 6px 16px;
+    transition: all 0.3s ease;
+    border-color: #0A84FF;
+    color: #0A84FF;
+}
+
+.login-link:hover {
+    background-color: rgba(10, 132, 255, 0.1);
+    border-color: #0A84FF;
+    color: #0A84FF;
+}
+
+.forgot-password {
+    color: #0A84FF;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.forgot-password:hover {
+    color: #0062CC;
+    text-decoration: underline !important;
+}
+
+.form-check-input:checked {
+    background-color: #0A84FF;
+    border-color: #0A84FF;
+}
