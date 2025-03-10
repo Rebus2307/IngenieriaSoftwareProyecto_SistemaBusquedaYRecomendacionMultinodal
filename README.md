@@ -1,4 +1,4 @@
-# Proyecto Spring Boot - Autenticación de Usuarios
+# IngenieriaSoftwareProyecto_SistemaBusquedaYRecomendacionMultinodal
 
 ## Descripción
 Este proyecto es un sistema de autenticación de usuarios desarrollado con Spring Boot. Permite el registro e inicio de sesión con manejo de roles y almacenamiento en MySQL. Se puede ejecutar localmente con XAMPP o mediante Docker.
@@ -47,3 +47,6 @@ El esquema de la base de datos se encuentra en el archivo `bd.sql`. Puede import
 - Para detener la ejecución en Docker, utilice `docker-compose down`.
 
 ## Pruebas de ejecucion
+
+![image](https://github.com/user-attachments/assets/381ec8f4-c7e9-4546-a186-86bb5621645f)
+![image](https://github.com/user-attachments/assets/c9d16757-847d-4e3b-90b9-c0e70a1cf222)
