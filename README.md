@@ -16,6 +16,13 @@ Antes de ejecutar el proyecto, asegúrese de tener instalado:
 - Maven 3.9.9
 - XAMPP (si desea ejecutarlo localmente) o Docker (para ejecutarlo con contenedores)
 
+## Clonar el Repositorio
+Para obtener el código fuente, clone el repositorio con el siguiente comando:
+```sh
+git clone https://github.com/tu-usuario/tu-repositorio.git
+cd tu-repositorio
+```
+
 ## Configuración de la Base de Datos
 El esquema de la base de datos se encuentra en el archivo `bd.sql`. Puede importarlo en phpMyAdmin si ejecuta el proyecto localmente con XAMPP.
 
