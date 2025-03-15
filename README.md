@@ -3,6 +3,9 @@
 ## Descripción
 Este proyecto es un sistema de autenticación de usuarios desarrollado con Spring Boot. Permite el registro e inicio de sesión con manejo de roles y almacenamiento en MySQL. Se puede ejecutar localmente con XAMPP o mediante Docker.
 
+## Documentación
+La documentación de este proyecto se encuentra en la carpeta "Documentación"
+
 ## Tecnologías Utilizadas
 - **Java 21 (Corretto)**
 - **Maven 3.9.9**
