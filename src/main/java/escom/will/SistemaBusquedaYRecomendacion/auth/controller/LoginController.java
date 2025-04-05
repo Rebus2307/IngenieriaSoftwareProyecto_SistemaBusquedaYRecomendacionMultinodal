@@ -225,4 +225,41 @@ public class LoginController {
             return "redirect:/perfil";
         }
     }
+
+    @GetMapping("/usuarios")
+    public String listarUsuarios(Model model) {
+        // Obtener el usuario autenticado actual
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            // Buscar primero por email ya que parece que es el campo usado para login
+            Usuario usuario = usuarioRepository.findByEmail(authentication.getName());
+
+            // Si no se encuentra por email, intentar por nombre
+            if (usuario == null) {
+                usuario = usuarioRepository.findByNombre(authentication.getName());
+            }
+
+            if (usuario != null) {
+                model.addAttribute("usuario", usuario);
+
+                // Codificar la imagen en base64 si existe
+                if (usuario.getImagen() != null && usuario.getImagen().length > 0) {
+                    String base64Image = Base64.getEncoder().encodeToString(usuario.getImagen());
+                    model.addAttribute("usuarioImagen", base64Image);
+                }
+
+                // Verificar si el usuario tiene el rol de administrador
+                boolean esAdmin = usuario.getRoles().stream()
+                        .anyMatch(rol -> "ROLE_ADMIN".equals(rol.getNombre()));
+                if (!esAdmin) {
+                    return "redirect:/home"; // Redirigir a home si no es administrador
+                }
+
+                // Obtener la lista de usuarios
+                model.addAttribute("usuarios", usuarioRepository.findAll());
+            }
+        }
+
+        return "usuarios"; // Nombre de la plantilla HTML
+    }
 }

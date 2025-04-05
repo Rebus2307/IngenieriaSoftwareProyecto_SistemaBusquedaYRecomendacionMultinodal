@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Usuarios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Botón para cambiar de tema -->
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="profile-pic">
+            <a th:href="@{/home}">
+                <img th:if="${usuario != null && usuario.imagen != null}"
+                     th:src="@{'data:image/png;base64,' + ${usuarioImagen}}" alt="Foto de perfil">
+                <div th:unless="${usuario != null && usuario.imagen != null}" class="blank-profile"></div>
+            </a>
+        </div>
+        <div class="menu">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/perfil}"><i class="fas fa-user"></i> PERFIL</a>
+                </li>
+                <li class="nav-item" th:if="${usuario != null && usuario.roles != null && usuario.roles[0].nombre == 'ROLE_ADMIN'}">
+                    <a class="nav-link active" th:href="@{/usuarios}"><i class="fas fa-users"></i> LISTA USUARIOS</a>
+                </li>
+                <li class="nav-item">
+                    <form th:action="@{/logout}" method="post" id="logoutForm">
+                        <a class="nav-link" href="javascript:void(0)" onclick="document.getElementById('logoutForm').submit();"><i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN</a>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Contenido principal -->
+    <div class="content">
+        <div class="welcome-message">
+            <h1>Lista de Usuarios</h1>
+        </div>
+        <div class="user-role">
+            Tu rol es: <span th:text="${usuario != null && usuario.roles != null ? usuario.roles[0].nombre : 'Sin rol asignado'}"></span>
+        </div>
+        <div class="user-table mt-4">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="usuario : ${usuarios}">
+                        <td th:text="${usuario.id}"></td>
+                        <td th:text="${usuario.nombre}"></td>
+                        <td th:text="${usuario.email}"></td>
+                        <td th:text="${usuario.roles[0].nombre}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <a th:href="@{/home}" class="btn btn-primary mt-3">Volver</a>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Función para alternar el tema
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            body.classList.toggle('dark-theme');
+            if (body.classList.contains('dark-theme')) {
+                themeIcon.textContent = '☀️'; // Sol para tema claro
+                localStorage.setItem('theme', 'dark'); // Guardar tema oscuro
+            } else {
+                themeIcon.textContent = '🌙'; // Luna para tema oscuro
+                localStorage.setItem('theme', 'light'); // Guardar tema claro
+            }
+        }
+
+        // Función para cargar el tema desde localStorage
+        function loadTheme() {
+            const theme = localStorage.getItem('theme');
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            if (theme === 'dark') {
+                body.classList.add('dark-theme');
+                themeIcon.textContent = '☀️'; // Sol para tema claro
+            } else {
+                body.classList.remove('dark-theme');
+                themeIcon.textContent = '🌙'; // Luna para tema oscuro
+            }
+        }
+
+        // Cargar el tema al cargar la página
+        document.addEventListener('DOMContentLoaded', loadTheme);
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
