@@ -56,7 +56,19 @@ El esquema de la base de datos se encuentra en el archivo `bd.sql`. Puede import
 - Se recomienda usar Postman o un cliente HTTP para probar los endpoints.
 - Para detener la ejecución en Docker, utilice `docker-compose down`.
 
+## Funcionalidades Implementadas
+- Plantillas HTML para Login y Registro (Thymeleaf)
+- Configuración básica de Spring Boot
+- Implementación de bae de datos
+- Ejecución con Docker
+- Administración de roles
+- Implementación de cambio de tema claro y oscuro
+
 ## Pruebas de ejecucion
 
 ![image](https://github.com/user-attachments/assets/381ec8f4-c7e9-4546-a186-86bb5621645f)
 ![image](https://github.com/user-attachments/assets/c9d16757-847d-4e3b-90b9-c0e70a1cf222)
+![image](https://github.com/user-attachments/assets/68368626-ec88-4101-8da6-23953128b7ad)
+![image](https://github.com/user-attachments/assets/27a734f0-df5f-472c-9859-2fbc7899de29)
+![image](https://github.com/user-attachments/assets/7eceff46-b030-49fc-8a8c-1d60944b0c0f)
+
