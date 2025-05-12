@@ -226,15 +226,15 @@ public class LoginController {
         }
     }
 
+    /**
+     * Lista todos los usuarios y verifica que el usuario autenticado sea administrador.
+     */
     @GetMapping("/usuarios")
     public String listarUsuarios(Model model) {
         // Obtener el usuario autenticado actual
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
-            // Buscar primero por email ya que parece que es el campo usado para login
             Usuario usuario = usuarioRepository.findByEmail(authentication.getName());
-
-            // Si no se encuentra por email, intentar por nombre
             if (usuario == null) {
                 usuario = usuarioRepository.findByNombre(authentication.getName());
             }
@@ -261,5 +261,62 @@ public class LoginController {
         }
 
         return "usuarios"; // Nombre de la plantilla HTML
+    }
+
+    /**
+     * Muestra el formulario para editar un usuario.
+     */
+    @GetMapping("/usuarios/editar/{id}")
+    public String mostrarFormularioEdicion(@PathVariable Long id, Model model) {
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        if (usuario == null) {
+            model.addAttribute("error", "Usuario no encontrado.");
+            return "redirect:/usuarios";
+        }
+        model.addAttribute("usuarioEditar", usuario);
+        return "editarUsuario"; // Nombre de la plantilla para editar usuarios
+    }
+
+    /**
+     * Procesa la solicitud para actualizar un usuario.
+     */
+    @PostMapping("/usuarios/editar/{id}")
+    public String actualizarUsuario(@PathVariable Long id, 
+                                    @RequestParam("nombre") String nombre,
+                                    @RequestParam("email") String email,
+                                    @RequestParam(value = "password", required = false) String password,
+                                    RedirectAttributes redirectAttributes) {
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        if (usuario == null) {
+            redirectAttributes.addFlashAttribute("error", "Usuario no encontrado.");
+            return "redirect:/usuarios";
+        }
+
+        usuario.setNombre(nombre);
+        usuario.setEmail(email);
+
+        if (password != null && !password.trim().isEmpty()) {
+            usuario.setPassword(passwordEncoder.encode(password));
+        }
+
+        usuarioRepository.save(usuario);
+        redirectAttributes.addFlashAttribute("mensaje", "Usuario actualizado correctamente.");
+        return "redirect:/usuarios";
+    }
+
+    /**
+     * Procesa la solicitud para eliminar un usuario.
+     */
+    @PostMapping("/usuarios/eliminar/{id}")
+    public String eliminarUsuario(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        if (usuario == null) {
+            redirectAttributes.addFlashAttribute("error", "Usuario no encontrado.");
+            return "redirect:/usuarios";
+        }
+
+        usuarioRepository.delete(usuario);
+        redirectAttributes.addFlashAttribute("mensaje", "Usuario eliminado correctamente.");
+        return "redirect:/usuarios";
     }
 }
