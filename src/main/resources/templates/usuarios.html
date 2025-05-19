@@ -28,7 +28,7 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/perfil}"><i class="fas fa-user"></i> PERFIL</a>
                 </li>
-                <li class="nav-item" th:if="${usuario != null && usuario.roles != null && usuario.roles[0].nombre == 'ROLE_ADMIN'}">
+                <li class="nav-item" th:if="${usuario != null && usuario.roles != null && usuario.roles.size() > 0 && usuario.roles[0].nombre == 'ROLE_ADMIN'}">
                     <a class="nav-link active" th:href="@{/usuarios}"><i class="fas fa-users"></i> LISTA USUARIOS</a>
                 </li>
                 <li class="nav-item">
@@ -45,9 +45,18 @@
         <div class="welcome-message">
             <h1>Lista de Usuarios</h1>
         </div>
-        <div class="user-role">
-            Tu rol es: <span th:text="${usuario != null && usuario.roles != null ? usuario.roles[0].nombre : 'Sin rol asignado'}"></span>
+        <div class="user-role" th:if="${usuario != null && usuario.roles != null && usuario.roles.size() > 0}">
+            Tu rol es: <span th:text="${usuario.roles[0].nombre}"></span>
         </div>
+        
+        <!-- Mensajes de alerta -->
+        <div class="alert alert-success" th:if="${mensaje != null}" role="alert">
+            <span th:text="${mensaje}"></span>
+        </div>
+        <div class="alert alert-danger" th:if="${error != null}" role="alert">
+            <span th:text="${error}"></span>
+        </div>
+        
         <div class="user-table mt-4">
             <table class="table table-striped">
                 <thead>
@@ -56,26 +65,28 @@
                         <th>Nombre</th>
                         <th>Email</th>
                         <th>Rol</th>
-                        <th>Opción</th> <!-- Nueva columna -->
+                        <th>Opción</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="usuario : ${usuarios}">
-                        <td th:text="${usuario.id}"></td>
-                        <td th:text="${usuario.nombre}"></td>
-                        <td th:text="${usuario.email}"></td>
-                        <td th:text="${usuario.roles[0].nombre}"></td>
+                    <tr th:each="user : ${usuarios}">
+                        <td th:text="${user.id}"></td>
+                        <td th:text="${user.nombre}"></td>
+                        <td th:text="${user.email}"></td>
+                        <td th:text="${user.roles != null && user.roles.size() > 0 ? user.roles[0].nombre : 'Sin rol'}"></td>
                         <td>
-                            <!-- Ícono para editar -->
-                            <button type="button" class="btn btn-sm btn-warning" title="Editar" 
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#editarUsuarioModal" 
-                                    onclick="cargarDatosUsuario([[${usuario.id}]], '[[${usuario.nombre}]]', '[[${usuario.email}]]')">
+                            <!-- Botón para editar -->
+                            <button type="button" class="btn btn-sm btn-warning" 
+                                   data-bs-toggle="modal" 
+                                   data-bs-target="#editarUsuarioModal"
+                                   th:attr="onclick='cargarDatosUsuario(\'' + ${user.id} + '\', \'' + ${user.nombre} + '\', \'' + ${user.email} + '\');'">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <!-- Ícono para eliminar -->
-                            <form th:action="@{/usuarios/eliminar/{id}(id=${usuario.id})}" method="post" style="display:inline;">
-                                <button type="submit" class="btn btn-sm btn-danger" title="Eliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
+                            
+                            <!-- Formulario para eliminar -->
+                            <form th:action="@{/usuarios/eliminar/{id}(id=${user.id})}" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-danger" 
+                                        onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
@@ -95,11 +106,11 @@
             const themeIcon = document.getElementById('theme-icon');
             body.classList.toggle('dark-theme');
             if (body.classList.contains('dark-theme')) {
-                themeIcon.textContent = '☀️'; // Sol para tema claro
-                localStorage.setItem('theme', 'dark'); // Guardar tema oscuro
+                themeIcon.textContent = '☀️'; 
+                localStorage.setItem('theme', 'dark');
             } else {
-                themeIcon.textContent = '🌙'; // Luna para tema oscuro
-                localStorage.setItem('theme', 'light'); // Guardar tema claro
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
             }
         }
 
@@ -110,10 +121,10 @@
             const themeIcon = document.getElementById('theme-icon');
             if (theme === 'dark') {
                 body.classList.add('dark-theme');
-                themeIcon.textContent = '☀️'; // Sol para tema claro
+                themeIcon.textContent = '☀️';
             } else {
                 body.classList.remove('dark-theme');
-                themeIcon.textContent = '🌙'; // Luna para tema oscuro
+                themeIcon.textContent = '🌙';
             }
         }
 
@@ -122,13 +133,13 @@
 
         // Función para cargar los datos del usuario seleccionado en el modal
         function cargarDatosUsuario(id, nombre, email) {
-            // Asignar los valores del usuario seleccionado al formulario del modal
             document.getElementById('usuarioId').value = id;
             document.getElementById('nombre').value = nombre;
             document.getElementById('email').value = email;
-            document.getElementById('password').value = ''; // Limpiar el campo de contraseña
+            document.getElementById('password').value = '';
         }
     </script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

@@ -26,6 +26,15 @@ CREATE TABLE usuario_roles (
 );
 -- Insertar roles en la tabla roles
 INSERT INTO roles (nombre) VALUES ('ROLE_ADMIN'), ('ROLE_USER');
+-- Insertar el usuario 'Rebus' con contraseña hasheada '23072003'
+INSERT INTO usuarios (nombre, email, password) 
+VALUES ('Rebus', 'rebus@admin.com', '$2a$10$GsjRsIhuS9YOn5sVCWDuY.W5mOxE7T05GMdiK1MWQ2QDGtuUGn5TG');
+
+-- Asignar el rol de administrador al usuario 'Rebus'
+INSERT INTO usuario_roles (usuario_id, rol_id)
+SELECT u.id, r.id
+FROM usuarios u, roles r
+WHERE u.nombre = 'Rebus' AND r.nombre = 'ROLE_ADMIN';
 -- Eliminar el usuario 'admin' si ya existe
 DROP USER IF EXISTS 'admin'@'localhost';
 FLUSH PRIVILEGES;
