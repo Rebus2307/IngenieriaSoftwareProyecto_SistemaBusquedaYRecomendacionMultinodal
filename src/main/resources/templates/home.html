@@ -28,6 +28,9 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/perfil}"><i class="fas fa-user"></i> PERFIL</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/buscar-libros}"><i class="fas fa-book-open"></i> BUSCAR LIBROS</a>
+                </li>
                 <li class="nav-item" th:if="${usuario != null && usuario.roles != null && usuario.roles[0].nombre == 'ROLE_ADMIN'}">
                     <a class="nav-link" th:href="@{/usuarios}"><i class="fas fa-users"></i> LISTA USUARIOS</a>
                 </li>

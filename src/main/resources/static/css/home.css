@@ -185,3 +185,50 @@ body {
 .btn-danger:active {
     transform: scale(0.95);
 }
+
+.main-content {
+    margin-left: 250px;
+    padding: 2rem;
+}
+
+.search-container {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.hover-effect {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.hover-effect:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.badge {
+    font-size: 0.9rem;
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] .search-container {
+    background: var(--bg-secondary-dark);
+    border-color: var(--border-dark);
+}
+
+[data-theme="dark"] .card {
+    background: var(--bg-secondary-dark);
+    border-color: var(--border-dark);
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select,
+[data-theme="dark"] .input-group-text {
+    background-color: var(--bg-dark);
+    border-color: var(--border-dark);
+    color: var(--text-light);
+}
