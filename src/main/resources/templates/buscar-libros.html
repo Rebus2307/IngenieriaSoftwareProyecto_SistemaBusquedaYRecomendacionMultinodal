@@ -50,34 +50,21 @@
         <div class="container-fluid">
             <h2 class="mb-4">Búsqueda de Libros</h2>
             
-            <!-- Formulario de búsqueda mejorado -->
+            <!-- Formulario de búsqueda -->
             <div class="search-container mb-4 p-4 rounded shadow-sm">
                 <form th:action="@{/buscar-libros}" method="get" class="row g-3">
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-book"></i></span>
                             <input type="text" class="form-control" name="titulo" 
                                    th:value="${param.titulo}" placeholder="Buscar por título...">
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-5">
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-user-edit"></i></span>
                             <input type="text" class="form-control" name="autor" 
                                    th:value="${param.autor}" placeholder="Buscar por autor...">
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-tag"></i></span>
-                            <select class="form-select" name="categoria">
-                                <option value="">Todas las categorías</option>
-                                <option th:each="cat : ${categorias}" 
-                                        th:value="${cat.id}" 
-                                        th:text="${cat.nombre}"
-                                        th:selected="${param.categoria == cat.id}">
-                                </option>
-                            </select>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -93,19 +80,16 @@
                 <div th:each="libro : ${libros}" class="col">
                     <div class="card h-100 shadow-sm hover-effect">
                         <div class="position-relative">
-                            <img th:if="${libro.urlImagen != null}" 
-                                 th:src="${libro.urlImagen}" 
-                                 class="card-img-top" alt="Portada del libro">
-                            <div th:unless="${libro.urlImagen != null}" 
+                            <img th:if="${libro.portadaUrl}" 
+                                 th:src="${libro.portadaUrl}" 
+                                 class="card-img-top" 
+                                 alt="Portada del libro"
+                                 onerror="this.onerror=null; this.src='/images/no-cover.png';">
+                            <div th:unless="${libro.portadaUrl}" 
                                  class="card-img-top d-flex align-items-center justify-content-center bg-light" 
                                  style="height: 200px;">
                                 <i class="fas fa-book fa-3x text-muted"></i>
                             </div>
-                            <span th:if="${libro.calificacion != null}" 
-                                  class="position-absolute top-0 end-0 badge bg-primary m-2">
-                                <i class="fas fa-star"></i> 
-                                <span th:text="${#numbers.formatDecimal(libro.calificacion, 1, 1)}">4.5</span>
-                            </span>
                         </div>
                         <div class="card-body">
                             <h5 class="card-title" th:text="${libro.titulo}">Título del libro</h5>
@@ -113,21 +97,16 @@
                                 <i class="fas fa-user-edit me-2"></i>
                                 <span th:text="${libro.autor}">Autor</span>
                             </p>
-                            <p class="card-text">
+                            <p class="card-text" th:if="${libro.anioPublicacion}">
                                 <i class="fas fa-calendar-alt me-2"></i>
                                 <span th:text="${libro.anioPublicacion}">Año</span>
                             </p>
-                            <p class="card-text">
-                                <i class="fas fa-tag me-2"></i>
-                                <span th:text="${libro.categoria?.nombre}" 
-                                      class="badge bg-secondary">Categoría</span>
+                            <p class="card-text" th:if="${libro.isbn}">
+                                <small class="text-muted">
+                                    <i class="fas fa-barcode me-2"></i>
+                                    ISBN: <span th:text="${libro.isbn}"></span>
+                                </small>
                             </p>
-                        </div>
-                        <div class="card-footer bg-transparent border-top-0">
-                            <a th:href="@{'/libro/' + ${libro.id}}" 
-                               class="btn btn-outline-primary w-100">
-                                <i class="fas fa-info-circle me-2"></i>Ver detalles
-                            </a>
                         </div>
                     </div>
                 </div>
