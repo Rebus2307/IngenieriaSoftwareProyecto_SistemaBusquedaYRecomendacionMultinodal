@@ -1,7 +1,9 @@
 -- Eliminar la base de datos "RecomendacionMultinodal" si ya existe
 DROP DATABASE IF EXISTS RecomendacionMultinodal;
+
 -- Crear la base de datos "RecomendacionMultinodal" con codificación UTF-8
 CREATE DATABASE RecomendacionMultinodal CHARACTER SET utf8 COLLATE utf8_general_ci;
+
 -- Usar la base de datos "RecomendacionMultinodal"
 USE RecomendacionMultinodal;
 
@@ -50,6 +52,18 @@ CREATE TABLE libros (
     FOREIGN KEY (categoria_id) REFERENCES categorias(id)
 );
 
+-- Crear tabla para guardar los libros favoritos de los usuarios
+CREATE TABLE favoritos (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    usuario_id BIGINT NOT NULL,
+    libro_id BIGINT NOT NULL,
+    libro_json JSON, -- Nueva columna para almacenar el JSON del libro
+    fecha_agregado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (libro_id) REFERENCES libros(id) ON DELETE CASCADE,
+    UNIQUE (usuario_id, libro_id) -- Evitar duplicados
+);
+
 -- Insertar roles en la tabla roles
 INSERT INTO roles (nombre) VALUES ('ROLE_ADMIN'), ('ROLE_USER');
 
@@ -74,11 +88,11 @@ INSERT INTO categorias (nombre, descripcion) VALUES
 -- Insertar libros de ejemplo
 INSERT INTO libros (titulo, autor, descripcion, anio_publicacion, categoria_id, calificacion) VALUES 
 ('1984', 'George Orwell', 'Una novela distópica sobre un futuro totalitario', 1949, 
- (SELECT id FROM categorias WHERE nombre = 'Ficción'), 4.5),
+ (SELECT id FROM categorias WHERE nombre = 'Ficcion'), 4.5),
 ('Clean Code', 'Robert C. Martin', 'Una guía práctica para escribir mejor código', 2008, 
- (SELECT id FROM categorias WHERE nombre = 'Tecnología'), 4.8),
+ (SELECT id FROM categorias WHERE nombre = 'Tecnologia'), 4.8),
 ('Dune', 'Frank Herbert', 'Una épica space opera sobre política y religión', 1965, 
- (SELECT id FROM categorias WHERE nombre = 'Ciencia Ficción'), 4.7);
+ (SELECT id FROM categorias WHERE nombre = 'Ciencia Ficcion'), 4.7);
 
 -- Configuración de usuario MySQL
 DROP USER IF EXISTS 'admin'@'localhost';

@@ -232,3 +232,19 @@ body {
     border-color: var(--border-dark);
     color: var(--text-light);
 }
+
+.btn-favorito {
+    transition: all 0.3s ease;
+}
+
+.btn-favorito:hover {
+    transform: scale(1.05);
+}
+
+.btn-favorito i {
+    color: #dc3545;
+}
+
+#seccionFavoritos {
+    transition: all 0.3s ease;
+}

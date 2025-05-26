@@ -34,6 +34,7 @@ public class SecurityConfig {
                 .requestMatchers("/register", "/login").permitAll()
                 .requestMatchers("/home", "/perfil").hasAnyRole("USER", "ADMIN") // Accesible para ambos roles
                 .requestMatchers("/buscar-libros/**", "/libro/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers("/buscar-peliculas/**").hasAnyRole("USER", "ADMIN") // Acceso para ambos roles
                 .requestMatchers("/usuarios/**").hasRole("ADMIN") // Solo accesible para ADMIN
                 .requestMatchers("/admin/**").hasRole("ADMIN") // Rutas exclusivas para ADMIN
                 .anyRequest().authenticated()

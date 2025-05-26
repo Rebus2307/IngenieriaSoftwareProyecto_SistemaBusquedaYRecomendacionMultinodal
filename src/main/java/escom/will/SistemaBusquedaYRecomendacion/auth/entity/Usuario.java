@@ -33,8 +33,15 @@ public class Usuario {
     )
     private Set<Rol> roles = new HashSet<>();
 
-    // Getters y setters
+    // Constructor sin argumentos requerido por JPA
+    public Usuario() {}
 
+    // Constructor con ID
+    public Usuario(Long id) {
+        this.id = id;
+    }
+
+    // Getters y setters
     public Long getId() {
         return id;
     }
