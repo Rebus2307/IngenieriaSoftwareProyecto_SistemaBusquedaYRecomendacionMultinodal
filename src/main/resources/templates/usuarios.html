@@ -8,6 +8,19 @@
     <link rel="stylesheet" th:href="@{/css/home.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/theme.css}">
+    <style>
+        /* Custom CSS for modal in dark mode */
+        .modal-content.dark-mode {
+            background-color: #343a40;
+            color: white;
+        }
+        .modal-header.dark-mode {
+            border-bottom: 1px solid #495057;
+        }
+        .modal-footer.dark-mode {
+            border-top: 1px solid #495057;
+        }
+    </style>
 </head>
 <body>
 <button class="theme-toggle" onclick="toggleTheme()">
@@ -55,7 +68,7 @@
     </div>
 
     <div class="user-table mt-4">
-        <table class="table table-striped">
+        <table id="userTable" class="table table-striped">
             <thead>
             <tr>
                 <th>ID</th>
@@ -157,35 +170,58 @@
     }
 
     // Función para alternar el tema
-        function toggleTheme() {
-            const body = document.body;
-            const themeIcon = document.getElementById('theme-icon');
-            body.classList.toggle('dark-theme');
-            if (body.classList.contains('dark-theme')) {
-                themeIcon.textContent = '☀️'; // Sol para tema claro
-                localStorage.setItem('theme', 'dark'); // Guardar tema oscuro
-            } else {
-                themeIcon.textContent = '🌙'; // Luna para tema oscuro
-                localStorage.setItem('theme', 'light'); // Guardar tema claro
-            }
+    function toggleTheme() {
+        const body = document.body;
+        const themeIcon = document.getElementById('theme-icon');
+        const userTable = document.getElementById('userTable');
+        const modalContent = document.querySelector('.modal-content');
+        const modalHeader = document.querySelector('.modal-header');
+        const modalFooter = document.querySelector('.modal-footer');
+
+        body.classList.toggle('dark-theme');
+        userTable.classList.toggle('table-dark');
+        modalContent.classList.toggle('dark-mode');
+        modalHeader.classList.toggle('dark-mode');
+        modalFooter.classList.toggle('dark-mode');
+
+        if (body.classList.contains('dark-theme')) {
+            themeIcon.textContent = '☀️'; // Sol para tema claro
+            localStorage.setItem('theme', 'dark'); // Guardar tema oscuro
+        } else {
+            themeIcon.textContent = '🌙'; // Luna para tema oscuro
+            localStorage.setItem('theme', 'light'); // Guardar tema claro
         }
-    
-        // Función para cargar el tema desde localStorage
-        function loadTheme() {
-            const theme = localStorage.getItem('theme');
-            const body = document.body;
-            const themeIcon = document.getElementById('theme-icon');
-            if (theme === 'dark') {
-                body.classList.add('dark-theme');
-                themeIcon.textContent = '☀️'; // Sol para tema claro
-            } else {
-                body.classList.remove('dark-theme');
-                themeIcon.textContent = '🌙'; // Luna para tema oscuro
-            }
+    }
+
+    // Función para cargar el tema desde localStorage
+    function loadTheme() {
+        const theme = localStorage.getItem('theme');
+        const body = document.body;
+        const themeIcon = document.getElementById('theme-icon');
+        const userTable = document.getElementById('userTable');
+        const modalContent = document.querySelector('.modal-content');
+        const modalHeader = document.querySelector('.modal-header');
+        const modalFooter = document.querySelector('.modal-footer');
+
+        if (theme === 'dark') {
+            body.classList.add('dark-theme');
+            userTable.classList.add('table-dark');
+            modalContent.classList.add('dark-mode');
+            modalHeader.classList.add('dark-mode');
+            modalFooter.classList.add('dark-mode');
+            themeIcon.textContent = '☀️'; // Sol para tema claro
+        } else {
+            body.classList.remove('dark-theme');
+            userTable.classList.remove('table-dark');
+            modalContent.classList.remove('dark-mode');
+            modalHeader.classList.remove('dark-mode');
+            modalFooter.classList.remove('dark-mode');
+            themeIcon.textContent = '🌙'; // Luna para tema oscuro
         }
-    
-        // Cargar el tema al cargar la página
-        document.addEventListener('DOMContentLoaded', loadTheme);
+    }
+
+    // Cargar el tema al cargar la página
+    document.addEventListener('DOMContentLoaded', loadTheme);
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
