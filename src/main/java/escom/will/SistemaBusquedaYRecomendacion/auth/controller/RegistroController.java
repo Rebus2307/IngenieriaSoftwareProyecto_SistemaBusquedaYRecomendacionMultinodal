@@ -1,7 +1,7 @@
 package escom.will.SistemaBusquedaYRecomendacion.auth.controller;
 
 import escom.will.SistemaBusquedaYRecomendacion.auth.entity.Usuario;
-import escom.will.SistemaBusquedaYRecomendacion.auth.service.UsuarioService;
+import escom.will.SistemaBusquedaYRecomendacion.auth.service.UsuarioServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class RegistroController {
 
     @Autowired
-    private UsuarioService usuarioService;
+    private UsuarioServiceImpl usuarioService;
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {

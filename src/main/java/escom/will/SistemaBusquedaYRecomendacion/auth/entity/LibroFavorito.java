@@ -1,50 +1,42 @@
 package escom.will.SistemaBusquedaYRecomendacion.auth.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.EqualsAndHashCode;
 
-import java.time.LocalDateTime;
-
-@Getter
-@Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "favoritos") // Asegúrate de que el nombre coincida con la tabla en la base de datos
+@Table(name = "libros_favoritos")
 public class LibroFavorito {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id", nullable = false)
-    @NotNull(message = "El usuario no puede ser nulo")
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "libro_id", nullable = false)
-    @NotNull(message = "El libro no puede ser nulo")
-    private Libro libro;
+    @Column(name = "libro_id")
+    private String libroId; // Almacena el ID del libro de Open Library
 
-    @Lob
-    @Column(name = "libro_json", columnDefinition = "TEXT")
-    private String libroJson; // Campo para almacenar el JSON del libro
+    public Long getId() {
+        return id;
+    }
 
-    @Column(name = "fecha_agregado", updatable = false)
-    private LocalDateTime fechaAgregado = LocalDateTime.now();
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    // Constructor sin argumentos requerido por JPA
-    public LibroFavorito() {}
+    public Usuario getUsuario() {
+        return usuario;
+    }
 
-    // Constructor adicional para facilitar la creación de objetos
-    public LibroFavorito(Usuario usuario, Libro libro, String libroJson) {
+    public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-        this.libro = libro;
-        this.libroJson = libroJson;
-        this.fechaAgregado = LocalDateTime.now();
+    }
+
+    public String getLibroId() {
+        return libroId;
+    }
+
+    public void setLibroId(String libroId) {
+        this.libroId = libroId;
     }
 }

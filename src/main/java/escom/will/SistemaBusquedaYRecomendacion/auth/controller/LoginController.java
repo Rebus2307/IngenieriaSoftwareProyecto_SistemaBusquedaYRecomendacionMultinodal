@@ -142,7 +142,7 @@ public class LoginController {
                     // **Update the Authentication object**
                     // Create a new Authentication object with the updated user details
                     Authentication newAuth = new UsernamePasswordAuthenticationToken(
-                            usuario.getEmail(), // or usuario.getNombre(), depending on your login logic
+                            usuario.getNombre(), // or usuario.getNombre(), depending on your login logic
                             authentication.getCredentials(),
                             authentication.getAuthorities()
                     );

@@ -3,6 +3,7 @@ package escom.will.SistemaBusquedaYRecomendacion.auth.entity;
 import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "usuarios")
@@ -32,6 +33,9 @@ public class Usuario {
             inverseJoinColumns = @JoinColumn(name = "rol_id")
     )
     private Set<Rol> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LibroFavorito> librosFavoritos;
 
     // Constructor sin argumentos requerido por JPA
     public Usuario() {}
@@ -88,5 +92,13 @@ public class Usuario {
 
     public void setRoles(Set<Rol> roles) {
         this.roles = roles;
+    }
+
+    public List<LibroFavorito> getLibrosFavoritos() {
+        return librosFavoritos;
+    }
+
+    public void setLibrosFavoritos(List<LibroFavorito> librosFavoritos) {
+        this.librosFavoritos = librosFavoritos;
     }
 }

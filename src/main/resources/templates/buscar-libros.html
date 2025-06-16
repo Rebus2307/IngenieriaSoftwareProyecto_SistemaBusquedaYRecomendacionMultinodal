@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" 
+<html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
@@ -13,12 +13,10 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
-    <!-- Botón para cambiar de tema -->
     <button class="theme-toggle" onclick="toggleTheme()">
         <span id="theme-icon">🌙</span>
     </button>
 
-    <!-- Sidebar -->
     <div class="sidebar">
         <div class="profile-pic">
             <a th:href="@{/home}">
@@ -29,15 +27,9 @@
         </div>
         <div class="menu">
             <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/perfil}"><i class="fas fa-user"></i> PERFIL</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/buscar-libros}"><i class="fas fa-book-open"></i> BUSCAR LIBROS</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/buscar-peliculas}"><i class="fas fa-book-open"></i> BUSCAR PELICULAS</a>
-                </li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/perfil}"><i class="fas fa-user"></i> PERFIL</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/buscar-libros}"><i class="fas fa-book-open"></i> BUSCAR LIBROS</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/buscar-peliculas}"><i class="fas fa-book-open"></i> BUSCAR PELICULAS</a></li>
                 <li class="nav-item" th:if="${usuario != null && usuario.roles != null && usuario.roles[0].nombre == 'ROLE_ADMIN'}">
                     <a class="nav-link" th:href="@{/usuarios}"><i class="fas fa-users"></i> LISTA USUARIOS</a>
                 </li>
@@ -50,73 +42,45 @@
         </div>
     </div>
 
-    <!-- Contenido principal -->
     <div class="main-content">
         <div class="container-fluid">
             <h2 class="mb-4">Búsqueda de Libros</h2>
-            
-            <!-- Formulario de búsqueda -->
+
             <div class="search-container mb-4 p-4 rounded shadow-sm">
                 <form th:action="@{/buscar-libros}" method="get" class="row g-3">
                     <div class="col-md-4">
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-book"></i></span>
-                            <input type="text" class="form-control" name="titulo" 
-                                   th:value="${param.titulo}" placeholder="Buscar por título...">
+                            <input type="text" class="form-control" name="titulo" th:value="${param.titulo}" placeholder="Buscar por título...">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-user-edit"></i></span>
-                            <input type="text" class="form-control" name="autor" 
-                                   th:value="${param.autor}" placeholder="Buscar por autor...">
+                            <input type="text" class="form-control" name="autor" th:value="${param.autor}" placeholder="Buscar por autor...">
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100">
-                            <i class="fas fa-search me-2"></i>Buscar
-                        </button>
+                        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search me-2"></i>Buscar</button>
                     </div>
                     <div class="col-md-2">
-                        <button type="button" id="btnMostrarFavoritos" class="btn btn-secondary w-100">
-                            <i class="fas fa-heart me-2"></i>Mis Favoritos
-                        </button>
+                        <button type="button" id="btnMostrarFavoritos" class="btn btn-secondary w-100"><i class="fas fa-heart me-2"></i>Mis Favoritos</button>
                     </div>
                 </form>
             </div>
 
-            <!-- Grid de resultados -->
             <div id="gridResultados" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
                 <div th:each="libro : ${libros}" class="col">
                     <div class="card h-100 shadow-sm hover-effect">
                         <div class="position-relative">
-                            <img th:if="${libro.portadaUrl}" 
-                                 th:src="${libro.portadaUrl}" 
-                                 class="card-img-top" 
-                                 alt="Portada del libro"
-                                 onerror="this.onerror=null; this.src='/images/no-cover.png';">
-                            <div th:unless="${libro.portadaUrl}" 
-                                 class="card-img-top d-flex align-items-center justify-content-center bg-light" 
-                                 style="height: 200px;">
-                                <i class="fas fa-book fa-3x text-muted"></i>
-                            </div>
+                            <img th:if="${libro.portadaUrl}" th:src="${libro.portadaUrl}" class="card-img-top" alt="Portada del libro" onerror="this.onerror=null; this.src='/images/no-cover.png';" style="height: 200px; object-fit: cover;">
+                            <div th:unless="${libro.portadaUrl}" class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px;"><i class="fas fa-book fa-3x text-muted"></i></div>
                         </div>
                         <div class="card-body">
                             <h5 class="card-title" th:text="${libro.titulo}">Título del libro</h5>
-                            <p class="card-text">
-                                <i class="fas fa-user-edit me-2"></i>
-                                <span th:text="${libro.autor}">Autor</span>
-                            </p>
-                            <p class="card-text" th:if="${libro.anioPublicacion}">
-                                <i class="fas fa-calendar-alt me-2"></i>
-                                <span th:text="${libro.anioPublicacion}">Año</span>
-                            </p>
-                            <p class="card-text" th:if="${libro.isbn}">
-                                <small class="text-muted">
-                                    <i class="fas fa-barcode me-2"></i>
-                                    ISBN: <span th:text="${libro.isbn}"></span>
-                                </small>
-                            </p>
+                            <p class="card-text"><i class="fas fa-user-edit me-2"></i><span th:text="${libro.autor != null ? libro.autor : 'Unknown'}">Autor</span></p>
+                            <p class="card-text" th:if="${libro.anioPublicacion}"><i class="fas fa-calendar-alt me-2"></i><span th:text="${libro.anioPublicacion}">Año</span></p>
+                            <p class="card-text" th:if="${libro.isbn}"><small class="text-muted"><i class="fas fa-barcode me-2"></i>ISBN: <span th:text="${libro.isbn}"></span></small></p>
                             <button class="btn btn-outline-danger btn-sm mt-2 btn-favorito w-100"
                                     th:data-libro-id="${libro.id}"
                                     th:data-es-favorito="${librosFavoritos != null && librosFavoritos.contains(libro.id)}">
@@ -128,93 +92,111 @@
                 </div>
             </div>
 
-            <!-- Sección de favoritos -->
-            <div id="seccionFavoritos" class="d-none">
-                <h3 class="mb-4">
-                    <i class="fas fa-heart text-danger me-2"></i>
-                    Mis Libros Favoritos
-                </h3>
+            <!-- Favoritos -->
+            <div id="seccionFavoritos" class="d-none mt-5">
+                <h3><i class="fas fa-heart text-danger me-2"></i>Mis Libros Favoritos</h3>
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
                     <div th:each="favorito : ${librosFavoritos}" class="col">
                         <div class="card h-100 shadow-sm hover-effect">
                             <div class="position-relative">
-                                <img th:if="${favorito.portadaUrl}" 
-                                     th:src="${favorito.portadaUrl}" 
-                                     class="card-img-top" 
-                                     alt="Portada del libro"
-                                     onerror="this.onerror=null; this.src='/images/no-cover.png';">
-                                <div th:unless="${favorito.portadaUrl}" 
-                                     class="card-img-top d-flex align-items-center justify-content-center bg-light" 
-                                     style="height: 200px;">
-                                    <i class="fas fa-book fa-3x text-muted"></i>
-                                </div>
+                                <img th:if="${favorito.portadaUrl}" th:src="${favorito.portadaUrl}" class="card-img-top" alt="Portada del libro" onerror="this.onerror=null; this.src='/images/no-cover.png';" style="height: 200px; object-fit: cover;">
+                                <div th:unless="${favorito.portadaUrl}" class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px;"><i class="fas fa-book fa-3x text-muted"></i></div>
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title" th:text="${favorito.titulo}">Título del libro</h5>
-                                <p class="card-text">
-                                    <i class="fas fa-user-edit me-2"></i>
-                                    <span th:text="${favorito.autor}">Autor</span>
-                                </p>
-                                <button class="btn btn-danger btn-sm mt-2 btn-quitar-favorito w-100"
-                                        th:data-libro-id="${favorito.id}">
-                                    <i class="fas fa-heart-broken me-2"></i>
-                                    Quitar de favoritos
-                                </button>
+                                <p class="card-text"><i class="fas fa-user-edit me-2"></i><span th:text="${favorito.autor}">Autor</span></p>
+                                <button class="btn btn-danger btn-sm mt-2 btn-quitar-favorito w-100" th:data-libro-id="${favorito.id}"><i class="fas fa-heart-broken me-2"></i>Quitar de favoritos</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Mensaje de no favoritos -->
-                <div th:if="${#lists.isEmpty(librosFavoritos)}" 
-                     class="alert alert-info text-center mt-4">
-                    <i class="fas fa-info-circle me-2"></i>
-                    No tienes libros favoritos guardados.
+                <div th:if="${#lists.isEmpty(librosFavoritos)}" class="alert alert-info text-center mt-4">
+                    <i class="fas fa-info-circle me-2"></i>No tienes libros favoritos guardados.
                 </div>
             </div>
 
-            <!-- Mensaje de no resultados -->
-            <div th:if="${#lists.isEmpty(libros)}" 
-                 class="alert alert-info mt-4 text-center">
-                <i class="fas fa-info-circle me-2"></i>
-                No se encontraron libros que coincidan con tu búsqueda.
+            <div th:if="${#lists.isEmpty(libros)}" class="alert alert-info mt-4 text-center">
+                <i class="fas fa-info-circle me-2"></i>No se encontraron libros que coincidan con tu búsqueda.
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
     <script>
-        // Función para alternar el tema
         function toggleTheme() {
             const body = document.body;
             const themeIcon = document.getElementById('theme-icon');
             body.classList.toggle('dark-theme');
-            if (body.classList.contains('dark-theme')) {
-                themeIcon.textContent = '☀️'; // Sol para tema claro
-                localStorage.setItem('theme', 'dark'); // Guardar tema oscuro
-            } else {
-                themeIcon.textContent = '🌙'; // Luna para tema oscuro
-                localStorage.setItem('theme', 'light'); // Guardar tema claro
-            }
+            const dark = body.classList.contains('dark-theme');
+            localStorage.setItem('theme', dark ? 'dark' : 'light');
+            themeIcon.textContent = dark ? '☀️' : '🌙';
         }
-    
-        // Función para cargar el tema desde localStorage
+
         function loadTheme() {
             const theme = localStorage.getItem('theme');
             const body = document.body;
             const themeIcon = document.getElementById('theme-icon');
-            if (theme === 'dark') {
-                body.classList.add('dark-theme');
-                themeIcon.textContent = '☀️'; // Sol para tema claro
-            } else {
-                body.classList.remove('dark-theme');
-                themeIcon.textContent = '🌙'; // Luna para tema oscuro
-            }
+            const dark = theme === 'dark';
+            body.classList.toggle('dark-theme', dark);
+            themeIcon.textContent = dark ? '☀️' : '🌙';
         }
-    
-        // Cargar el tema al cargar la página
-        document.addEventListener('DOMContentLoaded', loadTheme);
+
+        document.addEventListener("DOMContentLoaded", function () {
+            loadTheme();
+
+            const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+            const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+            document.getElementById("btnMostrarFavoritos").addEventListener("click", () => {
+                const favs = document.getElementById("seccionFavoritos");
+                favs.classList.toggle("d-none");
+            });
+
+            document.querySelectorAll('.btn-favorito').forEach(button => {
+                button.addEventListener('click', function () {
+                    const libroId = this.dataset.libroId;
+                    const esFavorito = this.dataset.esFavorito === 'true';
+                    const url = esFavorito ? '/quitar-favorito' : '/agregar-favorito';
+
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            [csrfHeader]: csrfToken
+                        },
+                        body: new URLSearchParams({ libroId })
+                    }).then(res => {
+                        if (res.ok) {
+                            location.reload();
+                        } else {
+                            alert("Error al actualizar favorito.");
+                        }
+                    });
+                });
+            });
+
+            document.querySelectorAll('.btn-quitar-favorito').forEach(button => {
+                button.addEventListener('click', function () {
+                    const libroId = this.dataset.libroId;
+
+                    fetch('/quitar-favorito', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            [csrfHeader]: csrfToken
+                        },
+                        body: new URLSearchParams({ libroId })
+                    }).then(res => {
+                        if (res.ok) {
+                            this.closest('.col').remove();
+                        } else {
+                            alert("No se pudo quitar el favorito.");
+                        }
+                    });
+                });
+            });
+        });
     </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script th:src="@{/js/favoritos.js}"></script>
 </body>
 </html>
